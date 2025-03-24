@@ -1,0 +1,39 @@
+frontend/
+├── public/
+│   ├── index.html
+├── src/
+│   ├── api/
+│   │   ├── apiService.js
+│   ├── assets/
+│   │   ├── logo.svg
+│   ├── components/
+│   │   ├── Auth/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Signup.jsx
+│   │   │   ├── ForgotPassword.jsx
+│   │   │   ├── ResetPassword.jsx
+│   │   ├── Dashboard/
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── AdminDashboard.jsx
+│   │   │   ├── ResidentDashboard.jsx
+│   │   ├── Rooms/
+│   │   │   ├── RoomList.jsx
+│   │   │   ├── RoomDetails.jsx
+│   │   ├── Billing/
+│   │   │   ├── BillingList.jsx
+│   │   ├── Notifications/
+│   │   │   ├── Notification.jsx
+│   │   ├── Common/
+│   │   │   ├── Sidebar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── ProtectedRoute.jsx
+│   ├── contexts/
+│   │   ├── AuthContext.jsx
+│   ├── App.jsx
+│   ├── main.jsx
+│   ├── index.css
+├── .env
+├── package.json
+├── tailwind.config.js
+└── vite.config.js
