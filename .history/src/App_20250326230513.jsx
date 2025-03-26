@@ -4,7 +4,6 @@ import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 import Navbar from './components/Common/Navbar';
 import ProtectedRoute from './components/Common/ProtectedRoute';
 import RoomCreate from './components/Rooms/RoomCreate'; // Import RoomCreate component
-import UserList from './components/Users/UserList'; // Import UserList component
 
 // Pages
 import Home from './components/Pages/Home';
@@ -43,13 +42,11 @@ const App = () => {
           <Route path="/admin/rooms" element={<ProtectedRoute requiredRole="admin"><RoomList /></ProtectedRoute>} />
           <Route path="/admin/rooms/:id" element={<ProtectedRoute requiredRole="admin"><RoomDetails /></ProtectedRoute>} />
           <Route path="/admin/rooms/create" element={<ProtectedRoute requiredRole="admin"><RoomCreate /></ProtectedRoute>} />
-          <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><UserList /></ProtectedRoute>} />
 
           {/* Resident Routes */}
           <Route path="/resident/dashboard" element={<ProtectedRoute requiredRole="resident"><ResidentDashboard /></ProtectedRoute>} />
           <Route path="/resident/rooms" element={<ProtectedRoute requiredRole="resident"><RoomList /></ProtectedRoute>} />
           <Route path="/resident/rooms/:id" element={<ProtectedRoute requiredRole="resident"><RoomDetails /></ProtectedRoute>} />
-          <Route path="/resident/dashboard" element={<ProtectedRoute requiredRole="resident"><ResidentDashboard /></ProtectedRoute>} />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" />} />

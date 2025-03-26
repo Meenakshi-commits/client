@@ -21,27 +21,25 @@ const Login = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await login(values);
-      console.log('API Response:', response);
-  
+      console.log('API Response:', response); // Debugging log
+      console.log('Token:', response?.token); // Debugging log
+      console.log('Role:', response?.role); // Debugging log
+
       if (response?.token && response?.role) {
         // Store in localStorage
         localStorage.setItem('token', response.token);
         localStorage.setItem('role', response.role);
         localStorage.setItem('username', response.username || 'User');
         alert('Login Successful!');
-  
+
         // Navigate to the correct dashboard using absolute paths
-        switch (response.role) {
-          case 'admin':
-            navigate('/admin/dashboard');
-            break;
-          case 'resident':
-          case 'user':
-            navigate('/resident/dashboard');
-            break;
-          default:
-            alert('Invalid role');
-            navigate('/');
+        if (response.role === 'admin') {
+          navigate('/admin/dashboard');
+        } else if (response.role === 'resident' || response.role === 'user') {
+          navigate('/resident/dashboard');
+        } else {
+          alert('Invalid role');
+          navigate('/');
         }
       } else {
         throw new Error('Invalid response from server. Please try again.');
@@ -53,7 +51,6 @@ const Login = () => {
       setSubmitting(false);
     }
   };
-  
 
   return (
     <div className="bg-gradient-to-br from-blue-400 to-purple-500 text-white min-h-screen flex items-center justify-center">

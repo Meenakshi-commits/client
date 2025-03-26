@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AuthContext = createContext();
 
@@ -16,21 +17,22 @@ export const AuthProvider = ({ children }) => {
     if (token && role) {
       setUser({ token, role, username });
     }
-  }, []); // Ensure it runs on component mount
+  }, []);
 
-  const login = (response) => {
-    const { token, role, username } = response;
+  const login = async (credentials) => {
+    const response = await axios.post('/api/auth/login', credentials);
+    const { token, role, username } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);
-    localStorage.setItem('username', username || 'User');
-    setUser({ token, role, username }); // Ensure state is updated
+    localStorage.setItem('username', username);
+    setUser({ token, role, username });
     navigate('/dashboard');
   };
 
   const logout = () => {
     localStorage.clear();
     setUser(null);
-    navigate('/login');
+    navigate('/');
   };
 
   return (

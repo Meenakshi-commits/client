@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
-export const useAuth = () => useContext(AuthContext);
-
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -13,23 +11,28 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
     const username = localStorage.getItem('username');
+
+    console.log('Token:', token);
+    console.log('Role:', role);
+    console.log('Username:', username);
+
     if (token && role) {
+      console.log('User Set in Context:', { token, role, username }); // Debugging log
       setUser({ token, role, username });
     }
-  }, []); // Ensure it runs on component mount
+  }, []);
 
-  const login = (response) => {
-    const { token, role, username } = response;
-    localStorage.setItem('token', token);
-    localStorage.setItem('role', role);
-    localStorage.setItem('username', username || 'User');
-    setUser({ token, role, username }); // Ensure state is updated
+  const login = (userData) => {
+    setUser(userData);
+    localStorage.setItem('token', userData.token);
+    localStorage.setItem('role', userData.role);
+    localStorage.setItem('username', userData.username);
     navigate('/dashboard');
   };
 
   const logout = () => {
-    localStorage.clear();
     setUser(null);
+    localStorage.clear();
     navigate('/login');
   };
 
@@ -39,3 +42,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);

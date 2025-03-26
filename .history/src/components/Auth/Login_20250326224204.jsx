@@ -31,17 +31,13 @@ const Login = () => {
         alert('Login Successful!');
   
         // Navigate to the correct dashboard using absolute paths
-        switch (response.role) {
-          case 'admin':
-            navigate('/admin/dashboard');
-            break;
-          case 'resident':
-          case 'user':
-            navigate('/resident/dashboard');
-            break;
-          default:
-            alert('Invalid role');
-            navigate('/');
+        if (response.role === 'admin') {
+          navigate('/admin/dashboard');
+        } else if (response.role === 'resident' || response.role === 'user') {
+          navigate('/resident/dashboard');
+        } else {
+          alert('Invalid role');
+          navigate('/');
         }
       } else {
         throw new Error('Invalid response from server. Please try again.');

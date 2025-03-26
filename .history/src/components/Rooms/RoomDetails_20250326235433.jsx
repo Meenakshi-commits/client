@@ -4,7 +4,7 @@ import { getRoomDetails } from '../../api/apiService';
 import axios from 'axios';
 
 const RoomDetails = () => {
-  const { id } = useParams(); // Ensure `id` is correctly extracted from the URL
+  const { id } = useParams();
   const [roomData, setRoomData] = useState(null);
   const [userId, setUserId] = useState('');
   const [users, setUsers] = useState([]);
@@ -14,7 +14,7 @@ const RoomDetails = () => {
   useEffect(() => {
     const fetchRoomDetails = async () => {
       try {
-        const data = await getRoomDetails(id); // Fetch room details using the `id`
+        const data = await getRoomDetails(id);
         setRoomData(data);
       } catch (error) {
         console.error('Error fetching room details:', error);
@@ -28,6 +28,7 @@ const RoomDetails = () => {
         const response = await axios.get('http://localhost:5000/api/users', {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log('API Response:', response.data); // Debugging log to check response
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error?.response?.data?.message || error.message);
@@ -65,7 +66,7 @@ const RoomDetails = () => {
         }
       );
       alert('Room allocated successfully!');
-      navigate('/admin/rooms');
+      navigate(`/${role}/rooms`);
     } catch (error) {
       alert(error?.response?.data?.message || 'Error allocating room');
     }
@@ -115,6 +116,21 @@ const RoomDetails = () => {
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
             Allocate Room
+          </button>
+        </div>
+      ) : room.status === 'occupied' ? (
+        <div className="mt-8">
+          <button
+            onClick={() => navigate('/maintenance')}
+            className="bg-yellow-500 text-white px-4 py-2 rounded mr-4 hover:bg-yellow-600"
+          >
+            Maintenance
+          </button>
+          <button
+            onClick={() => navigate('/billing')}
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            Billing
           </button>
         </div>
       ) : null}

@@ -5,15 +5,13 @@ import { useAuth } from '../../contexts/AuthContext';
 const ProtectedRoute = ({ children, requiredRole }) => {
   const { user } = useAuth();
 
-  if (user === null) {
-    return <div>Loading...</div>;
-  }
-
   if (!user) {
+    console.log('No user found. Redirecting to login.');
     return <Navigate to="/login" />;
   }
 
   if (requiredRole && user.role !== requiredRole) {
+    console.log('Unauthorized Access. Redirecting to respective dashboard.');
     return <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/resident/dashboard'} />;
   }
 

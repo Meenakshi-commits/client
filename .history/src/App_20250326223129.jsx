@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 import Navbar from './components/Common/Navbar';
 import ProtectedRoute from './components/Common/ProtectedRoute';
-import RoomCreate from './components/Rooms/RoomCreate'; // Import RoomCreate component
-import UserList from './components/Users/UserList'; // Import UserList component
 
 // Pages
 import Home from './components/Pages/Home';
@@ -42,14 +40,11 @@ const App = () => {
           <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/rooms" element={<ProtectedRoute requiredRole="admin"><RoomList /></ProtectedRoute>} />
           <Route path="/admin/rooms/:id" element={<ProtectedRoute requiredRole="admin"><RoomDetails /></ProtectedRoute>} />
-          <Route path="/admin/rooms/create" element={<ProtectedRoute requiredRole="admin"><RoomCreate /></ProtectedRoute>} />
-          <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><UserList /></ProtectedRoute>} />
 
           {/* Resident Routes */}
           <Route path="/resident/dashboard" element={<ProtectedRoute requiredRole="resident"><ResidentDashboard /></ProtectedRoute>} />
           <Route path="/resident/rooms" element={<ProtectedRoute requiredRole="resident"><RoomList /></ProtectedRoute>} />
           <Route path="/resident/rooms/:id" element={<ProtectedRoute requiredRole="resident"><RoomDetails /></ProtectedRoute>} />
-          <Route path="/resident/dashboard" element={<ProtectedRoute requiredRole="resident"><ResidentDashboard /></ProtectedRoute>} />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" />} />
@@ -61,28 +56,25 @@ const App = () => {
 
 const DashboardRedirect = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
+  console.log('User in DashboardRedirect:', user);
 
-  React.useEffect(() => {
-    if (!user) {
-      console.log('No User Found. Redirecting to Login');
-      navigate('/login');
-      return;
-    }
+  if (!user) {
+    console.log('No User Found. Redirecting to Login');
+    return <Navigate to="/login" />;
+  }
 
-    if (user?.role === 'admin') {
-      console.log('Navigating to Admin Dashboard');
-      navigate('/admin/dashboard');
-    } else if (user?.role === 'resident' || user?.role === 'user') {
-      console.log('Navigating to Resident Dashboard');
-      navigate('/resident/dashboard');
-    } else {
-      console.log('Invalid Role:', user?.role);
-      navigate('/');
-    }
-  }, [user, navigate]);
+  if (user?.role === 'admin') {
+    console.log('Navigating to Admin Dashboard');
+    return <Navigate to="/admin/dashboard" />;
+  }
 
-  return <div>Loading...</div>; // Display while navigating
+  if (user?.role === 'resident' || user?.role === 'user') {
+    console.log('Navigating to Resident Dashboard');
+    return <Navigate to="/resident/dashboard" />;
+  }
+
+  console.log('Invalid Role:', user?.role);
+  return <Navigate to="/" />;
 };
 
 export default App;
