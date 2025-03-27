@@ -49,7 +49,12 @@ export const getRooms = async () => {
 
 export const getRoomDetails = async (roomId) => {
   try {
-    const response = await apiService.get(`/api/rooms/${roomId}/details`);
+    const token = localStorage.getItem('token');
+    const response = await apiService.get(`/api/rooms/${roomId}/details`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching room details:', error?.response?.data?.message || error.message);
