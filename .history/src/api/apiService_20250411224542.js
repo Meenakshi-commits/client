@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://server-production-d135.up.railway.app/api'; // Ensure this is correct
+const API_URL = 'https://server-production-d135.up.railway.app'; // Ensure this is correct
 
 const apiService = axios.create({
   baseURL: API_URL,
